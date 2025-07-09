@@ -9,7 +9,7 @@
 class CWindow
 {
 public:
-    CWindow(const std::string& title, int width, int height);
+    CWindow(const std::string& title, ImVec2 size);
     ~CWindow();
 
 private:

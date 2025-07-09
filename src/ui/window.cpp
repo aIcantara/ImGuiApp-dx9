@@ -4,7 +4,7 @@
 #include <imgui_impl_dx9.h>
 #include <imgui_impl_win32.h>
 
-CWindow::CWindow(const std::string& title, int width, int height) : resizeWidth(0), resizeHeight(0), hWnd(nullptr)
+CWindow::CWindow(const std::string& title, ImVec2 size) : resizeWidth(0), resizeHeight(0), hWnd(nullptr)
 {
     wc = { sizeof(wc), CS_CLASSDC, wndProc, 0L, 0L, GetModuleHandleA(nullptr), nullptr, nullptr, nullptr, nullptr, title.c_str(), nullptr };
     wc.hbrBackground = (HBRUSH)CreateSolidBrush(RGB(0, 0, 0));
@@ -16,10 +16,10 @@ CWindow::CWindow(const std::string& title, int width, int height) : resizeWidth(
         wc.lpszClassName,
         title.c_str(),
         WS_POPUP,
-        (GetSystemMetrics(SM_CXSCREEN) / 2) - (width / 2),
-        (GetSystemMetrics(SM_CYSCREEN) / 2) - (height / 2),
-        width,
-        height,
+        (GetSystemMetrics(SM_CXSCREEN) / 2) - (size.x / 2),
+        (GetSystemMetrics(SM_CYSCREEN) / 2) - (size.y / 2),
+        size.x,
+        size.y,
         nullptr,
         nullptr,
         wc.hInstance,
