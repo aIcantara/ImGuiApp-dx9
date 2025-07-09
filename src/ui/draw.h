@@ -16,8 +16,6 @@ private:
     HWND hWnd;
     
     const char* windowTitle;
-
-    void init();
 };
 
 #endif // DRAW_H

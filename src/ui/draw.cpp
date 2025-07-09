@@ -3,7 +3,16 @@
 
 CDraw::CDraw(const char* title, HWND& hWnd) : windowTitle(title), hWnd(hWnd)
 {
-    init();
+    ImGuiIO& io = ImGui::GetIO();
+
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
+
+    io.IniFilename = nullptr;
+
+    ImGui::GetStyle().WindowRounding = 0.0f;
+
+    CFonts::instance().init();
 }
 
 void CDraw::render()
@@ -23,18 +32,4 @@ void CDraw::render()
             PostMessage(hWnd, WM_CLOSE, 0, 0);
     }
     ImGui::End();
-}
-
-void CDraw::init()
-{
-    ImGuiIO& io = ImGui::GetIO();
-
-    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
-    io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
-
-    io.IniFilename = nullptr;
-
-    ImGui::GetStyle().WindowRounding = 0.0f;
-
-    CFonts::instance().init();
 }
