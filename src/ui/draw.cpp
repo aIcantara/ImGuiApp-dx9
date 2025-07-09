@@ -1,4 +1,5 @@
 #include "draw.h"
+#include "fonts/fonts.h"
 
 CDraw::CDraw(const char* title, HWND& hWnd) : hWnd(hWnd), title(title)
 {
@@ -11,7 +12,7 @@ CDraw::CDraw(const char* title, HWND& hWnd) : hWnd(hWnd), title(title)
 
     ImGui::GetStyle().WindowRounding = 0.0f;
 
-    fonts.initialize();
+    fonts::initialize();
 }
 
 void CDraw::render()
@@ -23,7 +24,7 @@ void CDraw::render()
     {
         ImGui::Text("Swiss721Bt (Default Font)");
 
-        ImGui::PushFont(fonts.newscycleRegular);
+        ImGui::PushFont(fonts::newscycleRegular);
         ImGui::Text("NewscycleRegular");
         ImGui::PopFont();
 
