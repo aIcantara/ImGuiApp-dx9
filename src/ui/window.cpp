@@ -209,14 +209,14 @@ LRESULT WINAPI CWindow::wndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPar
     if (ImGui_ImplWin32_WndProcHandler(hWnd, uMsg, wParam, lParam))
         return true;
 
-    CWindow* window = reinterpret_cast<CWindow*>(GetWindowLongPtr(hWnd, GWLP_USERDATA));
-
     switch (uMsg)
     {
     case WM_SIZE:
     {
         if (wParam == SIZE_MINIMIZED)
             return 0;
+
+        CWindow* window = reinterpret_cast<CWindow*>(GetWindowLongPtr(hWnd, GWLP_USERDATA));
 
         if (window)
         {
