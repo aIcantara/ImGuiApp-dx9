@@ -4,7 +4,7 @@
 #include <imgui_impl_dx9.h>
 #include <imgui_impl_win32.h>
 
-CWindow::CWindow(const char* title, ImVec2 size) : resizeWidth(0), resizeHeight(0), hWnd(nullptr)
+CWindow::CWindow(const char* title, ImVec2 size) : hWnd(nullptr), resizeWidth(0), resizeHeight(0)
 {
     wc = { sizeof(wc), CS_CLASSDC, wndProc, 0L, 0L, GetModuleHandleA(nullptr), nullptr, nullptr, nullptr, nullptr, title, nullptr };
     wc.hbrBackground = (HBRUSH)CreateSolidBrush(RGB(0, 0, 0));

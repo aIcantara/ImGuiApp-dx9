@@ -15,7 +15,7 @@ public:
 private:
     HWND hWnd;
     
-    const char* windowTitle;
+    const char* title;
 };
 
 #endif // DRAW_H
