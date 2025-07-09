@@ -8,7 +8,9 @@ class CFonts
 public:
     static CFonts& instance();
 
-    ImFont* medium = nullptr;
+    ImFont* newscycleRegular = nullptr;
+    ImFont* swiss721Bt = nullptr;
+    
     void init();
 
 private:

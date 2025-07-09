@@ -3,13 +3,12 @@
 
 #include <imgui.h>
 
-#include <string>
 #include <d3d9.h>
 
 class CWindow
 {
 public:
-    CWindow(const std::string& title, ImVec2 size);
+    CWindow(const char*, ImVec2 size);
     ~CWindow();
 
 private:
@@ -21,6 +20,8 @@ private:
     D3DPRESENT_PARAMETERS d3dpp;
 
     UINT resizeWidth, resizeHeight;
+
+    void moving();
 
     bool createDeviceD3D();
     void cleanupDeviceD3D();

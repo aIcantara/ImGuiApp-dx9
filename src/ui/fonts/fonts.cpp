@@ -1,5 +1,5 @@
 #include "fonts.h"
-#include "bytes.h"
+#include "converted.h"
 
 const ImWchar CFonts::ranges[] =
 {
@@ -29,5 +29,6 @@ void CFonts::init()
     fontConfig.RasterizerMultiply = 1.2f;
     fontConfig.GlyphRanges = ranges;
 
-    medium = io.Fonts->AddFontFromMemoryTTF(rootUIMedium, sizeof(rootUIMedium), 18.0f, &fontConfig, ranges);
+    swiss721Bt = io.Fonts->AddFontFromMemoryTTF(converted::swiss721Bt, sizeof(converted::swiss721Bt), 18.0f, &fontConfig, ranges);
+    newscycleRegular = io.Fonts->AddFontFromMemoryTTF(converted::newscycleRegular, sizeof(converted::newscycleRegular), 21.0f, &fontConfig, ranges);
 }

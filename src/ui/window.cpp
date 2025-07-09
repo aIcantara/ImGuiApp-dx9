@@ -4,9 +4,9 @@
 #include <imgui_impl_dx9.h>
 #include <imgui_impl_win32.h>
 
-CWindow::CWindow(const std::string& title, ImVec2 size) : resizeWidth(0), resizeHeight(0), hWnd(nullptr)
+CWindow::CWindow(const char* title, ImVec2 size) : resizeWidth(0), resizeHeight(0), hWnd(nullptr)
 {
-    wc = { sizeof(wc), CS_CLASSDC, wndProc, 0L, 0L, GetModuleHandleA(nullptr), nullptr, nullptr, nullptr, nullptr, title.c_str(), nullptr };
+    wc = { sizeof(wc), CS_CLASSDC, wndProc, 0L, 0L, GetModuleHandleA(nullptr), nullptr, nullptr, nullptr, nullptr, title, nullptr };
     wc.hbrBackground = (HBRUSH)CreateSolidBrush(RGB(0, 0, 0));
 
     RegisterClassEx(&wc);
@@ -14,7 +14,7 @@ CWindow::CWindow(const std::string& title, ImVec2 size) : resizeWidth(0), resize
     hWnd = CreateWindowEx(
         WS_EX_LAYERED,
         wc.lpszClassName,
-        title.c_str(),
+        title,
         WS_POPUP,
         (GetSystemMetrics(SM_CXSCREEN) / 2) - (size.x / 2),
         (GetSystemMetrics(SM_CYSCREEN) / 2) - (size.y / 2),
@@ -81,6 +81,8 @@ CWindow::CWindow(const std::string& title, ImVec2 size) : resizeWidth(0), resize
 
         ImGui::NewFrame();
         {
+            moving();
+            
             draw.render();
         }
         ImGui::EndFrame();
@@ -118,6 +120,41 @@ CWindow::~CWindow()
     DestroyWindow(hWnd);
 
     UnregisterClass(wc.lpszClassName, wc.hInstance);
+}
+
+void CWindow::moving()
+{
+    static POINT lastCursorPos;
+    static POINT lastWindowPos;
+
+    if (ImGui::IsMouseDragging(ImGuiMouseButton_Left) && !ImGui::IsAnyItemHovered() && !ImGui::IsAnyItemFocused())
+    {
+        POINT cursorPos;
+
+        GetCursorPos(&cursorPos);
+
+        if (cursorPos.x != lastCursorPos.x || cursorPos.y != lastCursorPos.y)
+        {
+            if (lastCursorPos.x != 0 && lastCursorPos.y != 0)
+            {
+                int deltaX = cursorPos.x - lastCursorPos.x;
+                int deltaY = cursorPos.y - lastCursorPos.y;
+
+                RECT windowRect;
+
+                GetWindowRect(hWnd, &windowRect);
+
+                SetWindowPos(hWnd, nullptr, windowRect.left + deltaX, windowRect.top + deltaY, 0, 0, SWP_NOSIZE | SWP_NOZORDER);
+            }
+
+            lastCursorPos = cursorPos;
+        }
+    }
+    else
+    {
+        lastCursorPos.x = 0;
+        lastCursorPos.y = 0;
+    }
 }
 
 bool CWindow::createDeviceD3D()
