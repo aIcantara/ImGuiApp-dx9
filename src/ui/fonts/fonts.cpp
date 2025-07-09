@@ -21,14 +21,14 @@ CFonts& CFonts::instance()
 void CFonts::init()
 {
     ImGuiIO& io = ImGui::GetIO();
-    ImFontConfig fontConfig;
+    ImFontConfig config;
 
-    fontConfig.PixelSnapH = false;
-    fontConfig.OversampleH = 5;
-    fontConfig.OversampleV = 5;
-    fontConfig.RasterizerMultiply = 1.2f;
-    fontConfig.GlyphRanges = ranges;
+    config.PixelSnapH = false;
+    config.OversampleH = 5;
+    config.OversampleV = 5;
+    config.RasterizerMultiply = 1.2f;
+    config.GlyphRanges = ranges;
 
-    swiss721Bt = io.Fonts->AddFontFromMemoryTTF(converted::swiss721Bt, sizeof(converted::swiss721Bt), 18.0f, &fontConfig, ranges);
-    newscycleRegular = io.Fonts->AddFontFromMemoryTTF(converted::newscycleRegular, sizeof(converted::newscycleRegular), 21.0f, &fontConfig, ranges);
+    swiss721Bt = io.Fonts->AddFontFromMemoryTTF(converted::swiss721Bt, sizeof(converted::swiss721Bt), 18.0f, &config, ranges);
+    newscycleRegular = io.Fonts->AddFontFromMemoryTTF(converted::newscycleRegular, sizeof(converted::newscycleRegular), 21.0f, &config, ranges);
 }
