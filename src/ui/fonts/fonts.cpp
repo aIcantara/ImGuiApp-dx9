@@ -11,14 +11,7 @@ const ImWchar CFonts::ranges[] =
     0
 };
 
-CFonts& CFonts::instance()
-{
-    static CFonts instance;
-
-    return instance;
-}
-
-void CFonts::init()
+void CFonts::initialize()
 {
     ImGuiIO& io = ImGui::GetIO();
     ImFontConfig config;
