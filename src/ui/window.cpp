@@ -54,6 +54,7 @@ CWindow::CWindow(const std::string& title, int width, int height) : resizeWidth(
     while (!quit)
     {
         MSG msg;
+        
         while (::PeekMessage(&msg, nullptr, 0U, 0U, PM_REMOVE))
         {
             TranslateMessage(&msg);
