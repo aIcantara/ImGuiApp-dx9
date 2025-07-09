@@ -47,7 +47,7 @@ CWindow::CWindow(const char* title, ImVec2 size) : resizeWidth(0), resizeHeight(
     CDraw draw(title, hWnd);
 
     ImGui_ImplWin32_Init(hWnd);
-    ImGui_ImplDX9_Init(d3dDevice);
+    ImGui_ImplDX9_Init(pd3dDevice);
 
     bool quit = false;
 
@@ -87,24 +87,24 @@ CWindow::CWindow(const char* title, ImVec2 size) : resizeWidth(0), resizeHeight(
         }
         ImGui::EndFrame();
 
-        d3dDevice->SetRenderState(D3DRS_ZENABLE, FALSE);
-        d3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
-        d3dDevice->SetRenderState(D3DRS_SCISSORTESTENABLE, FALSE);
+        pd3dDevice->SetRenderState(D3DRS_ZENABLE, FALSE);
+        pd3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
+        pd3dDevice->SetRenderState(D3DRS_SCISSORTESTENABLE, FALSE);
 
-        if (d3dDevice->BeginScene() >= 0)
+        if (pd3dDevice->BeginScene() >= 0)
         {
-            d3dDevice->Clear(0, nullptr, D3DCLEAR_TARGET, D3DCOLOR_ARGB(0, 0, 0, 0), 1.0f, 0);
+            pd3dDevice->Clear(0, nullptr, D3DCLEAR_TARGET, D3DCOLOR_ARGB(0, 0, 0, 0), 1.0f, 0);
 
             ImGui::Render();
 
             ImGui_ImplDX9_RenderDrawData(ImGui::GetDrawData());
 
-            d3dDevice->EndScene();
+            pd3dDevice->EndScene();
         }
 
-        HRESULT result = d3dDevice->Present(nullptr, nullptr, nullptr, nullptr);
+        HRESULT result = pd3dDevice->Present(nullptr, nullptr, nullptr, nullptr);
 
-        if (result == D3DERR_DEVICELOST && d3dDevice->TestCooperativeLevel() == D3DERR_DEVICENOTRESET)
+        if (result == D3DERR_DEVICELOST && pd3dDevice->TestCooperativeLevel() == D3DERR_DEVICENOTRESET)
             resetDevice();
     }
 }
@@ -159,7 +159,7 @@ void CWindow::moving()
 
 bool CWindow::createDeviceD3D()
 {
-    if ((D3D = Direct3DCreate9(D3D_SDK_VERSION)) == nullptr)
+    if ((pD3D = Direct3DCreate9(D3D_SDK_VERSION)) == nullptr)
         return false;
 
     ZeroMemory(&d3dpp, sizeof(d3dpp));
@@ -171,7 +171,7 @@ bool CWindow::createDeviceD3D()
     d3dpp.AutoDepthStencilFormat = D3DFMT_D16;
     d3dpp.PresentationInterval = D3DPRESENT_INTERVAL_ONE;
 
-    if (D3D->CreateDevice(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, hWnd, D3DCREATE_HARDWARE_VERTEXPROCESSING, &d3dpp, &d3dDevice) < 0)
+    if (pD3D->CreateDevice(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, hWnd, D3DCREATE_HARDWARE_VERTEXPROCESSING, &d3dpp, &pd3dDevice) < 0)
         return false;
 
     return true;
@@ -179,16 +179,16 @@ bool CWindow::createDeviceD3D()
 
 void CWindow::cleanupDeviceD3D()
 {
-    if (d3dDevice)
+    if (pd3dDevice)
     {
-        d3dDevice->Release();
-        d3dDevice = nullptr;
+        pd3dDevice->Release();
+        pd3dDevice = nullptr;
     }
 
-    if (D3D)
+    if (pD3D)
     {
-        D3D->Release();
-        D3D = nullptr;
+        pD3D->Release();
+        pD3D = nullptr;
     }
 }
 
@@ -196,7 +196,7 @@ void CWindow::resetDevice()
 {
     ImGui_ImplDX9_InvalidateDeviceObjects();
 
-    HRESULT hr = d3dDevice->Reset(&d3dpp);
+    HRESULT hr = pd3dDevice->Reset(&d3dpp);
 
     if (hr == D3DERR_INVALIDCALL)
         IM_ASSERT(0);

@@ -15,8 +15,8 @@ private:
     HWND hWnd;
     WNDCLASSEX wc;
 
-    LPDIRECT3D9 D3D;
-    LPDIRECT3DDEVICE9 d3dDevice;
+    LPDIRECT3D9 pD3D;
+    LPDIRECT3DDEVICE9 pd3dDevice;
     D3DPRESENT_PARAMETERS d3dpp;
 
     UINT resizeWidth, resizeHeight;
