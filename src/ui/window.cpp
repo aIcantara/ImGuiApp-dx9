@@ -6,15 +6,19 @@
 
 CWindow::CWindow(const char* title, ImVec2 size) : hWnd(nullptr), resizeWidth(0), resizeHeight(0)
 {
-    wc = { sizeof(wc), CS_CLASSDC, wndProc, 0L, 0L, GetModuleHandleA(nullptr), nullptr, nullptr, nullptr, nullptr, title, nullptr };
+    int len = MultiByteToWideChar(1251, 0, title, -1, nullptr, 0);
+    wchar_t* wTitle = new wchar_t[len];
+    MultiByteToWideChar(1251, 0, title, -1, wTitle, len);
+
+    wc = { sizeof(wc), CS_CLASSDC, wndProc, 0L, 0L, GetModuleHandleW(nullptr), nullptr, nullptr, nullptr, nullptr, wTitle, nullptr };
     wc.hbrBackground = (HBRUSH)CreateSolidBrush(RGB(0, 0, 0));
 
-    RegisterClassEx(&wc);
+    RegisterClassExW(&wc);
 
-    hWnd = CreateWindowEx(
+    hWnd = CreateWindowExW(
         WS_EX_LAYERED,
         wc.lpszClassName,
-        title,
+        wTitle,
         WS_POPUP,
         (GetSystemMetrics(SM_CXSCREEN) / 2) - (size.x / 2),
         (GetSystemMetrics(SM_CYSCREEN) / 2) - (size.y / 2),
@@ -26,6 +30,8 @@ CWindow::CWindow(const char* title, ImVec2 size) : hWnd(nullptr), resizeWidth(0)
         this
     );
 
+    delete[] wTitle;
+
     SetLayeredWindowAttributes(hWnd, RGB(0, 0, 0), 0, LWA_COLORKEY);
     SetWindowLongPtr(hWnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this));
 
@@ -33,7 +39,7 @@ CWindow::CWindow(const char* title, ImVec2 size) : hWnd(nullptr), resizeWidth(0)
     {
         cleanupDeviceD3D();
 
-        UnregisterClass(wc.lpszClassName, wc.hInstance);
+        UnregisterClassW(wc.lpszClassName, wc.hInstance);
 
         return;
     }
@@ -54,7 +60,7 @@ CWindow::CWindow(const char* title, ImVec2 size) : hWnd(nullptr), resizeWidth(0)
     while (!quit)
     {
         MSG msg;
-        
+
         while (::PeekMessage(&msg, nullptr, 0U, 0U, PM_REMOVE))
         {
             TranslateMessage(&msg);
@@ -82,7 +88,7 @@ CWindow::CWindow(const char* title, ImVec2 size) : hWnd(nullptr), resizeWidth(0)
         ImGui::NewFrame();
         {
             moving();
-            
+
             draw.render();
         }
         ImGui::EndFrame();
@@ -119,7 +125,7 @@ CWindow::~CWindow()
 
     DestroyWindow(hWnd);
 
-    UnregisterClass(wc.lpszClassName, wc.hInstance);
+    UnregisterClassW(wc.lpszClassName, wc.hInstance);
 }
 
 void CWindow::moving()

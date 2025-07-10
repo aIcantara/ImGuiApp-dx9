@@ -13,7 +13,7 @@ public:
 
 private:
     HWND hWnd;
-    WNDCLASSEX wc;
+    WNDCLASSEXW wc;
 
     LPDIRECT3D9 pD3D;
     LPDIRECT3DDEVICE9 pd3dDevice;
