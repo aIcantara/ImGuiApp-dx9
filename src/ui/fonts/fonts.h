@@ -10,6 +10,7 @@ public:
     ImFont* newscycleRegular = nullptr;
 
     void initialize();
+    
 private:
     static const ImWchar ranges[];
 };
