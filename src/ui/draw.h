@@ -1,7 +1,7 @@
 #ifndef DRAW_H
 #define DRAW_H
 
-#include <imgui.h>
+#include "fonts/fonts.h"
 
 #include <windows.h>
 
@@ -13,6 +13,8 @@ public:
     void render();
 
 private:
+    CFonts fonts;
+
     HWND hWnd;
     
     const char* title;
