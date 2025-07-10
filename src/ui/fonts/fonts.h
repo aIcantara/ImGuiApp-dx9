@@ -1,5 +1,5 @@
-#ifndef FONTS_HPP
-#define FONTS_HPP
+#ifndef FONTS_H
+#define FONTS_H
 
 #include <imgui.h>
 
@@ -14,4 +14,4 @@ private:
     static const ImWchar ranges[];
 };
 
-#endif // FONTS_HPP
+#endif // FONTS_H
